@@ -298,6 +298,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 ╭───『 *Download* 』─❍
 ◈ •likee
 ◈ •pinterest
+◈ •pinterest2
 ◈ •threads
 ◈ •capcut
 ◈ •itunes
@@ -310,12 +311,16 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 ◈ •ytmp4
 ◈ •gdrive
 ◈ •gitclone
+◈ •githubstalk
+◈ •npmstalk
 ◈ •githubdl
 ◈ •twitter
 ◈ •tiktok
+◈ •ttstalk
 ◈ •gimage
 ◈ •insta
 ◈ •igstory
+◈ •igstalk
 ◈ •mediafire
 ◈ •facebook
 ◈ •wallpapers
