@@ -110,7 +110,7 @@ export async function handler(chatUpdate) {
       let chat = global.db.data.chats[m.chat]
       if (typeof chat !== 'object') global.db.data.chats[m.chat] = {}
       if (chat) {
-        if (!('antiDelete' in chat)) chat.antiDelete = true
+        if (!('antiDelete' in chat)) chat.antiDelete = false
         if (!('antiLink' in chat)) chat.antiLink = false
         if (!('antiSticker' in chat)) chat.antiSticker = false
         if (!('antiToxic' in chat)) chat.antiToxic = false
@@ -125,13 +125,13 @@ export async function handler(chatUpdate) {
         if (!('sWelcome' in chat)) chat.sWelcome = ''
         if (!('useDocument' in chat)) chat.useDocument = false
         if (!('viewOnce' in chat)) chat.viewOnce = false
-        if (!('viewStory' in chat)) chat.viewStory = true
+        if (!('viewStory' in chat)) chat.viewStory = false
         if (!('welcome' in chat)) chat.welcome = false
         if (!('chatbot' in chat)) chat.chatbot = false
         if (!isNumber(chat.expired)) chat.expired = 0
       } else
         global.db.data.chats[m.chat] = {
-          antiDelete: true,
+          antiDelete: false,
           antiLink: false,
           antiSticker: false,
           antiToxic: false,
@@ -148,7 +148,7 @@ export async function handler(chatUpdate) {
           sWelcome: '',
           useDocument: false,
           viewOnce: false,
-          viewStory: true,
+          viewStory: false,
           welcome: false,
           chatbot: false,
         }
