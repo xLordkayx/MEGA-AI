@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
-import pkg from 'nayan-videos-downloader';
-const { ytdown } = pkg;
+import pkg from 'api-qasim';
+const { ytmp4 } = pkg;
 
 const fetchWithRetry = async (url, options, retries = 3) => {
     for (let i = 0; i < retries; i++) {
@@ -32,20 +32,32 @@ const handler = async (m, { args, conn, usedprefix }) => {
 
     try {
         // Fetch video details with ytdown
-        const response = await ytdown(url);
-        console.log('API Response:', response); // Log the API response
-
-        if (!response || !response.data) {
+        const response = await ytmp4(url);
+        
+        // Check if response is valid and contains 'video' field
+        if (!response || !response.video) {
+            console.error('Invalid response structure:', response); // Log invalid response for better debugging
             throw new Error('Invalid response from the downloader.');
         }
 
-        const videoUrl = response.data.video_hd; // Use HD URL
+        const videoUrl = response.video; // Use the 'video' key for the URL
         if (!videoUrl) {
-            throw new Error('HD video URL not found.');
+            throw new Error('Video URL not found.');
         }
 
-        const title = response.data.title || 'video';
-        const caption = `𝘗𝘖𝘞𝘌𝘙𝘌𝘋 𝘉𝘠 © 𝘜𝘓𝘛𝘙𝘈-𝘔𝘋`;
+        const title = response.title || 'video';
+        const author = response.author || 'Unknown Author';
+        const duration = response.duration || 'N/A';
+        const views = response.views || '0';
+        const uploadDate = response.upload || 'Unknown Date';
+        const thumbnail = response.thumbnail || '';
+        
+        const caption = `*𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 © 𝙼𝙴𝙶𝙰-𝙰𝙸*\n\n` +
+                        `*Title:* ${title}\n` +
+                        `*Author:* ${author}\n` +
+                        `*Duration:* ${duration}\n` +
+                        `*Views:* ${views}\n` +
+                        `*Uploaded on:* ${uploadDate}`;
 
         // Fetch the video file with retry
         const mediaResponse = await fetchWithRetry(videoUrl, {
@@ -64,9 +76,10 @@ const handler = async (m, { args, conn, usedprefix }) => {
         const mediaBuffer = Buffer.from(arrayBuffer);
         if (mediaBuffer.length === 0) throw new Error('Downloaded file is empty');
 
-        // Send the video file
+        // Send the video file along with the caption
         await conn.sendFile(m.chat, mediaBuffer, `null`, caption, m, false, {
-            mimetype: 'video/mp4'
+            mimetype: 'video/mp4',
+            thumbnail: thumbnail
         });
 
         await m.react('✅'); // React with a checkmark emoji for success

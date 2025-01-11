@@ -2,6 +2,7 @@ import axios from 'axios'
 
 let handler = async (m, { conn, text }) => {
   if (!text) throw '✳️ What do you want me to search for on YouTube?'
+  await m.react('⏳'); // React with a loading emoji
 
   try {
     const query = encodeURIComponent(text)
@@ -12,18 +13,25 @@ let handler = async (m, { conn, text }) => {
       throw 'No results found for the given query.'
     }
 
-    const firstResult = results[0]
+    // Get at least 10 results, but if there are fewer, use all of them
+    const resultsToSend = results.slice(0, 10)
 
-    const message = `
-乂 ${firstResult.title}
-乂 *Link* : ${firstResult.url}
-乂 *Duration* : ${firstResult.timestamp}
-乂 *Published :* ${firstResult.ago}
-乂 *Views:* ${firstResult.views}
+    let message = 'Here are the top results:\n\n'
+    resultsToSend.forEach((result, index) => {
+      message += `
+乂 ${index + 1}. ${result.title}
+乂 *Link* : ${result.url}
+乂 *Duration* : ${result.timestamp}
+乂 *Published* : ${result.ago}
+乂 *Views:* ${result.views}
 
-    `
+      `
+    })
+    await m.react('✅'); // React with a done emoji
 
-    conn.sendFile(m.chat, firstResult.thumbnail, 'yts.jpeg', message, m)
+    // Send the message along with the thumbnail of the first result
+    conn.sendFile(m.chat, resultsToSend[0].thumbnail, 'yts.jpeg', message, m)
+
   } catch (error) {
     console.error(error)
     throw 'An error occurred while searching for YouTube videos.'

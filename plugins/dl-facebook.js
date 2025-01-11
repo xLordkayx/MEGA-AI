@@ -1,74 +1,45 @@
-import fetch from 'node-fetch';
-
-// Utility function for retrying the fetch request
-async function fetchWithRetry(url, options, retries = 5, delay = 10000) { // Increased delay to 10 seconds
-  try {
-    const response = await fetchWithTimeout(url, options);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    if (retries > 0) {
-      console.log(`Fetch failed, retrying... (${retries} retries left)`);
-      await new Promise(res => setTimeout(res, delay)); // Delay before retry
-      return fetchWithRetry(url, options, retries - 1, delay); // Retry the request
-    } else {
-      throw new Error(`Failed after retries: ${error.message}`);
-    }
-  }
-}
-
-// Fetch with timeout logic
-async function fetchWithTimeout(url, options, timeout = 30000) { // Increased timeout to 30 seconds
-  const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error('Request timed out')), timeout)
-  );
-  const fetchPromise = fetch(url, options);
-  const response = await Promise.race([fetchPromise, timeoutPromise]);
-  return response;
-}
+import pkg from 'api-qasim';
+const { fbdl } = pkg;
 
 let handler = async (m, { conn, usedPrefix, args, command, text }) => {
   if (!text) throw 'You need to provide the URL of the Facebook video.';
 
   m.react('⌛'); // Indicating that the bot is processing the request
 
-  // Prepare the fetch request options, including headers
-  const options = {
-    method: 'GET',
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    },
-  };
-
   let res;
   try {
-    // Call the fetch function with retry logic
-    res = await fetchWithRetry(`https://global-tech-api.vercel.app/fbvideo?url=${encodeURIComponent(text)}`, options);
-  } catch (error) {
-    throw `An error occurred while fetching the video: ${error.message}`;
-  }
+    // Fetch the video data using fbdl
+    res = await fbdl(text);
+    
+    // Log the response to inspect its structure
+    console.log("API Response:", res); 
 
-  // Log the API response for debugging purposes
-  console.log("API Response:", JSON.stringify(res, null, 2));
+    // Check if res.data exists and is an array
+    if (!res || !res.data || !Array.isArray(res.data)) {
+      throw 'No video data found or the response structure is incorrect.';
+    }
 
-  // Ensure the response contains valid video data
-  if (!res || !res.result || (!res.result.hd && !res.result.sd)) {
-    throw 'No video found or invalid response from the API.';
-  }
+    let data = res.data; // Extract video data from the response
 
-  // Choose the highest quality video available
-  const videoURL = res.result.hd || res.result.sd;
-  
-  m.react('✅'); // Indicating that the video is ready to be sent
-  
-  // Send the video to the user
-  if (videoURL) {
+    // Check if there is any valid video URL (find the first valid item with 'url')
+    const validVideo = data.find(item => item.url);
+
+    if (!validVideo) {
+      throw 'No valid video URL found in the response.';
+    }
+
+    const videoURL = validVideo.url;  // Get the video URL from the first valid item
+    console.log("Found Video URL:", videoURL); // Log the video URL for debugging
+
+    // If a video URL is found, send the video
+    m.react('✅'); // Indicating that the video is ready to be sent
+
     const cap = 'Here is the video you requested:';
-    conn.sendFile(m.chat, videoURL, 'video.mp4', cap, m);
-  } else {
-    throw 'No video available to download.';
+    await conn.sendFile(m.chat, videoURL, 'video.mp4', cap, m);
+
+  } catch (error) {
+    console.error("Error:", error);
+    throw `An error occurred while processing the request: ${error.message}`;
   }
 };
 
