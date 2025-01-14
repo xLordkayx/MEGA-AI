@@ -71,6 +71,7 @@ let str = `
 ◈┃• aimenu
 ◈┃• aeditor
 ◈┃• imagen
+◈┃• textpro
 ◈┃• menu
 ◈┃• menu3
 ◈┃• menu4

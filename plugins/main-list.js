@@ -329,6 +329,8 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 ◈ •play
 ◈ •play2
 ◈ •play5
+◈ •audio
+◈ •video
 ◈ •mega
 ◈ •ytsearch
 ◈ •ytmp3 
@@ -351,6 +353,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 ◈ •rwall
 ◈ •rnekos
 ◈ •swdl
+◈ •apkdl
 ◈ •apksearch
 ◈ •playstore
 ◈ •ringtone
