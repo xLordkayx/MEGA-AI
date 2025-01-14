@@ -71,6 +71,9 @@ let handler = async (m, { conn, usedPrefix, command }) => {
         '🃏 *' +
         usedPrefix +
         'randompic* - Random Images you might like and love.\n\n' +
+        '🏖️ *' +
+        usedPrefix +
+        'textpro* - Generate Beautiful Logos Using Text Of Your Choice.\n\n' +
         '🎥 *' +
         usedPrefix +
         'randomvid* - Random Videos you might like and love.\n\n' +
@@ -126,6 +129,27 @@ let handler = async (m, { conn, usedPrefix, command }) => {
  ◈ •ai
  ◈ •fact
  ◈ •why
+ ╰─────────❍` //
+ break
+
+ case 'logosmaker':
+ case 'ephoto':
+ case 'textpro':
+      lkr=`
+ ╭───『 *AI* 』─❍
+ ◈ •papercut
+ ◈ •logomaker
+ ◈ •bpstyle
+ ◈ •cartoon
+ ◈ •glossy
+ ◈ •writetext
+ ◈ •texteffect
+ ◈ •lighteffect
+ ◈ •advancedglow
+ ◈ •pixelglitch
+ ◈ •clouds
+ ◈ •galaxy
+ ◈ •beach
  ╰─────────❍` //
  break
       case 'imagen':
@@ -750,6 +774,9 @@ handler.help = [
   'animereactions',
   'reactions',
   'imagen',
+  'textpro',
+  'textmaker',
+  'logosmaker',
   'imagenai',
   'animemenu',
   'aeditor',
@@ -783,6 +810,9 @@ handler.command = [
   'animereactions',
   'reactions',
   'imagen',
+  'textpro',
+  'textmaker',
+  'logosmaker',
   'imagenai',
   'animemenu',
   'aeditor',
