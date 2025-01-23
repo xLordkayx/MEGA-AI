@@ -123,7 +123,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
  ◈ •gpt4
  ◈ •travel
  ◈ •blackpink
- ◈ •image
+ ◈ •gimage
  ◈ •google
  ◈ •bro
  ◈ •ai
