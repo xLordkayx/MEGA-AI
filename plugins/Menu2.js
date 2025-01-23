@@ -7,9 +7,11 @@ const { levelling } = '../lib/levelling.js'
 import moment from 'moment-timezone'
 import { promises } from 'fs'
 import { join } from 'path'
-const time = moment.tz('Asia/Karachi').format('HH')
-let wib = moment.tz('Asia/Karachi').format('HH:mm:ss')
-//import db from '../lib/database.js'
+const OwnerName = process.env.OWNER_NAME || 'QASIM ALI';
+const BOTNAME = process.env.BOTNAME || 'MEGA-AI';
+const timeZone = process.env.TIME_ZONE || 'Asia/Karachi';
+const time = moment.tz(timeZone).format('HH');
+let wib = moment.tz(timeZone).format('HH:mm:ss');
 
 let handler = async (m, { conn, usedPrefix, command}) => {
     let d = new Date(new Date + 3600000)
@@ -38,47 +40,47 @@ let quote = quotes[Math.floor(Math.random() * quotes.length)];
 let taguser = '@' + m.sender.split("@s.whatsapp.net")[0]
 let str = `
 🚀 *_Buckle up ${name}, ${greeting}! We're going on an adventure!_* 🚀
-
 📋 *_Quote of the day: ${quote}_* 📋
-> ➠ *Bot Name* : *MEGA-AI*
-> ➠ *Version*     : *4 . 0 . 0*
-> ➠ *Type*          : *PLUGINS*
-> ➠ *Platform*   : *LINUX*
-
-◈┏━⟪ *MENU* ⟫━━⦿
-◈┃• groupmenu
-◈┃• animemenu
-◈┃• autoreact
-◈┃• infoanime
-◈┃• makermenu
-◈┃• ownermenu
-◈┃• stickermenu
-◈┃• toolsmenu
-◈┃• gamesmenu
-◈┃• logomenu
-◈┃• listplugin
-◈┃• economy
-◈┃• reactions
-◈┃• funmenu
-◈┃• nsfwmenu
-◈┃• randompic
-◈┃• randomvid
-◈┃• setprivacy
-◈┃• botmenu
-◈┃• listmenu
-◈┃• dlmenu
-◈┃• enable
-◈┃• aimenu
-◈┃• aeditor
-◈┃• imagen
-◈┃• textpro
-◈┃• menu
-◈┃• menu3
-◈┃• menu4
-◈┃• fancy
-◈┗━♪♪━★━☆━⦿
-
-© GlobalTechInfo
+◈┏━⟪ *INFO* ⟫━━⦿⦿
+◈┃• *OWNER*:*${OwnerName}*
+◈┃• *USER*:*${username}*
+◈┃• *BOT*:*${BOTNAME}*
+◈┃• *VERSION*:*4.0.0*
+◈┃• *TIME*: *${wib}*
+◈┗━♪♪━★━☆━━⦿⦿
+◈┏━⟪ *MAIN* ⟫━━⦿⦿
+◈┃• *aimenu*
+◈┃• *aeditor*
+◈┃• *animemenu*
+◈┃• *autoreact*
+◈┃• *botmenu*
+◈┃• *dlmenu*
+◈┃• *economy*
+◈┃• *enable*
+◈┃• *fancy*
+◈┃• *funmenu*
+◈┃• *gamesmenu*
+◈┃• *groupmenu*
+◈┃• *imagen*
+◈┃• *infoanime*
+◈┃• *listmenu*
+◈┃• *listplugin*
+◈┃• *logomenu*
+◈┃• *makermenu*
+◈┃• *menu*
+◈┃• *menu3*
+◈┃• *menu4*
+◈┃• *nsfwmenu*
+◈┃• *randompic*
+◈┃• *randomvid*
+◈┃• *reactions*
+◈┃• *stickermenu*
+◈┃• *textpro*
+◈┃• *toolsmenu*
+◈┃• *ownermenu*
+◈┃• *setprivacy*
+◈┗━♪♪━★━☆━━⦿⦿
+© *GlobalTechInfo*
 
 > 💡 *_Remember, when in doubt, use ${usedPrefix}listmenu or ${usedPrefix}help It's like my magic spell book!_* 💡
 `

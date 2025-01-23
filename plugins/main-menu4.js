@@ -7,8 +7,10 @@ const { levelling } = '../lib/levelling.js'
 import moment from 'moment-timezone'
 import { promises } from 'fs'
 import { join } from 'path'
-const time = moment.tz('Asia/Karachi').format('HH')
-let wib = moment.tz('Asia/Karachi').format('HH:mm:ss')
+const OwnerName = process.env.OWNER_NAME || 'QASIM ALI';
+const timeZone = process.env.TIME_ZONE || 'Asia/Karachi';
+const time = moment.tz(timeZone).format('HH')
+let wib = moment.tz(timeZone).format('HH:mm:ss')
 //import db from '../lib/database.js'
 
 let handler = async (m, { conn, usedPrefix, command }) => {
@@ -49,8 +51,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 📜 *_Quote of the day: ${quote}_* 📜
 
 ┏━💼 _User Info:_ 💼━┓
-┃ 👾  *User:* ${taguser} 
-┃ 🎩  *Name:* ${name} 
+┃ 🎩  *Owner:* ${OwnerName} 
 ┃ 🦸  *Master:* ${author} 
 ┃ 💎  *Diamonds:* ${diamond} 
 ┃ 🏆  *Rank:* ${role}
@@ -90,7 +91,8 @@ function clockString(ms) {
 }
 
 function ucapan() {
-  const time = moment.tz('Asia/Karachi').format('HH')
+  const timeZone = process.env.TIME_ZONE || 'Asia/Karachi';
+  const time = moment.tz(timeZone).format('HH')
   let res = 'happy early in the day☀️'
   if (time >= 4) {
     res = 'Good Morning 🌄'
